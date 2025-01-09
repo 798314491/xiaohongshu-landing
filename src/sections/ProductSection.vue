@@ -77,7 +77,7 @@
               </div>
             </div>
           </div>
-          <div class="absolute -right-4 -bottom-4 w-full h-full border-2 border-red-500 rounded-lg"></div>
+          <div class="absolute -right-4 -bottom-4 w-full h-full border-1 rounded-lg"></div>
         </div>
       </div>
     </div>

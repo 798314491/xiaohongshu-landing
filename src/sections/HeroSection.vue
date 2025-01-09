@@ -85,13 +85,13 @@
           <div class="relative">
             <img src="/images/mockup.png" alt="演示" class="w-full max-w-md mx-auto" @error="handleMockupError" v-show="!mockupError" />
             <!-- 添加占位内容 -->
-            <div v-if="mockupError" class="w-full max-w-md mx-auto aspect-[3/4] bg-gradient-to-br from-red-50 to-pink-50 rounded-lg flex items-center justify-center">
+            <!-- <div v-if="mockupError" class="w-full max-w-md mx-auto aspect-[3/4] bg-gradient-to-br from-red-50 to-pink-50 rounded-lg flex items-center justify-center">
               <div class="text-center">
                 <svg class="w-16 h-16 text-red-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
               </div>
-            </div>
+            </div> -->
             <!-- 添加浮动动画元素 -->
             <div class="absolute -top-4 -right-4 w-20 h-20 bg-red-100 rounded-full animate-float"></div>
             <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-pink-100 rounded-full animate-float-delay"></div>
