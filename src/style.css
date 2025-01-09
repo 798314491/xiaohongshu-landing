@@ -77,3 +77,23 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* 暗色模式样式 */
+.dark {
+  color-scheme: dark;
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.dark body {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.dark .text-gray-600 {
+  color: #9ca3af;
+}
+
+.dark .text-gray-900 {
+  color: #ffffff;
+}

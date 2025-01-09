@@ -1,9 +1,9 @@
 <template>
-  <section class="min-h-screen relative overflow-hidden bg-gradient-to-b from-red-50 to-white">
+  <section class="min-h-screen relative overflow-hidden bg-gradient-to-b from-red-50 to-white dark:from-gray-900 dark:to-gray-800">
     <!-- 顶部导航 -->
     <nav :class="[
       'fixed top-0 w-full z-50 transition-all duration-300',
-      scrolled ? 'bg-white/95 backdrop-blur-sm shadow-lg' : 'bg-transparent'
+      scrolled ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-lg' : 'bg-transparent'
     ]">
       <div class="container mx-auto px-4 py-4 flex justify-between items-center">
         <div class="flex items-center space-x-2">
@@ -11,29 +11,80 @@
           <div v-else class="w-8 h-8 rounded-full bg-gradient-to-r from-red-400 to-red-500 flex items-center justify-center text-white font-bold">
             小
           </div>
-          <span class="text-xl font-bold" :class="scrolled ? 'text-red-500' : 'text-gray-800'">小红书去水印</span>
+          <span class="text-xl font-bold" :class="scrolled ? 'text-red-500' : 'text-gray-800 dark:text-gray-100'">
+            {{ currentLang === 'zh' ? '小红薯无水印图片下载' : 'Xiaohongshu Downloader' }}
+          </span>
         </div>
         <!-- 修改导航链接样式 -->
-        <div class="hidden md:flex space-x-1">
-          <a 
-            v-for="(item, index) in navItems" 
-            :key="index"
-            :href="item.href"
+        <div class="flex items-center space-x-4">
+          <div class="hidden md:flex space-x-1">
+            <a 
+              v-for="(item, index) in navItems" 
+              :key="index"
+              :href="item.href"
+              :class="[
+                'px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium',
+                scrolled 
+                  ? 'text-gray-600 dark:text-gray-300 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30' 
+                  : 'text-gray-700 dark:text-gray-200 hover:text-gray-900 hover:bg-white/30 dark:hover:bg-gray-800'
+              ]"
+              @click.prevent="scrollToSection(item.href)"
+            >
+              {{ messages[currentLang].nav[item.key] }}
+            </a>
+          </div>
+
+          <!-- 语言切换按钮 -->
+          <button 
             :class="[
               'px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium',
               scrolled 
-                ? 'text-gray-600 hover:text-red-500 hover:bg-red-50' 
-                : 'text-gray-700 hover:text-gray-900 hover:bg-white/30'
+                ? 'text-gray-600 dark:text-gray-300 hover:text-red-500 hover:bg-red-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:hover:text-white' 
+                : 'text-gray-700 dark:text-gray-200 hover:text-gray-900 hover:bg-white/30 dark:bg-gray-900 dark:hover:bg-gray-800 dark:hover:text-white'
             ]"
-            @click.prevent="scrollToSection(item.href)"
+            @click="toggleLanguage"
           >
-            {{ item.text }}
-          </a>
+            {{ currentLang === 'zh' ? 'EN' : '中' }}
+          </button>
+
+          <!-- 主题切换按钮 -->
+          <button 
+            :class="[
+              'px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium',
+              scrolled 
+                ? 'text-gray-600 dark:text-gray-300 hover:text-red-500 hover:bg-red-50 dark:bg-gray-900 dark:hover:bg-gray-800 dark:hover:text-white' 
+                : 'text-gray-700 dark:text-gray-200 hover:text-gray-900 hover:bg-white/30 dark:bg-gray-900 dark:hover:bg-gray-800 dark:hover:text-white'
+            ]"
+            @click="toggleTheme"
+          >
+            <!-- 月亮图标 - 暗色模式 -->
+            <svg 
+              v-if="!isDark"
+              class="w-5 h-5" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+            <!-- 太阳图标 - 亮色模式 -->
+            <svg 
+              v-else
+              class="w-5 h-5" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </button>
         </div>
         <!-- 移动端菜单按钮 -->
         <button 
           class="md:hidden p-2 rounded-lg transition-colors"
-          :class="scrolled ? 'hover:bg-red-50 text-gray-600 hover:text-red-500' : 'hover:bg-white/30 text-gray-700 hover:text-gray-900'"
+          :class="scrolled 
+            ? 'hover:bg-red-50 text-gray-600 hover:text-red-500 dark:hover:bg-red-900/30' 
+            : 'hover:bg-white/30 text-gray-700 hover:text-gray-900 dark:hover:bg-gray-800'"
           @click="toggleMobileMenu"
         >
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -55,7 +106,7 @@
             class="block py-3 text-gray-600 hover:text-red-500 border-b border-gray-100 last:border-0"
             @click.prevent="scrollToSection(item.href)"
           >
-            {{ item.text }}
+            {{ messages[currentLang].nav[item.key] }}
           </a>
         </div>
       </div>
@@ -66,35 +117,39 @@
       <div class="flex flex-col md:flex-row items-center justify-between">
         <div class="md:w-1/2 space-y-6">
           <h1 class="text-4xl md:text-6xl font-bold text-gray-900">
-            轻松下载<br/>
-            <span class="text-red-500">小红书视频图文</span>
+            {{ messages[currentLang].hero.title }}<br/>
+            <span class="text-red-500">{{ messages[currentLang].hero.subtitle }}</span>
           </h1>
           <p class="text-lg text-gray-600">
-            一键去水印，高清下载，支持批量保存，让分享更加简单
+            {{ messages[currentLang].hero.description }}
           </p>
           <div class="flex space-x-4">
-            <button class="bg-red-500 text-white px-8 py-3 rounded-full hover:bg-red-600 transition-colors">
-              立即使用
+            <button 
+              class="bg-red-500 text-white px-8 py-3 rounded-full hover:bg-red-600 transition-colors"
+              @click="scrollToSection('#product')"
+            >
+              {{ messages[currentLang].hero.buttons.use }}
             </button>
-            <button class="border border-red-500 text-red-500 px-8 py-3 rounded-full hover:bg-red-50 transition-colors">
-              了解更多
+            <button 
+              class="border border-red-500 text-red-500 px-8 py-3 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
+              @click="scrollToSection('#features')"
+            >
+              {{ messages[currentLang].hero.buttons.more }}
             </button>
           </div>
         </div>
         <div class="md:w-1/2 mt-10 md:mt-0">
           <div class="relative">
-            <img src="/images/mockup.png" alt="演示" class="w-full max-w-md mx-auto" @error="handleMockupError" v-show="!mockupError" />
-            <!-- 添加占位内容 -->
-            <!-- <div v-if="mockupError" class="w-full max-w-md mx-auto aspect-[3/4] bg-gradient-to-br from-red-50 to-pink-50 rounded-lg flex items-center justify-center">
-              <div class="text-center">
-                <svg class="w-16 h-16 text-red-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-              </div>
-            </div> -->
-            <!-- 添加浮动动画元素 -->
-            <div class="absolute -top-4 -right-4 w-20 h-20 bg-red-100 rounded-full animate-float"></div>
-            <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-pink-100 rounded-full animate-float-delay"></div>
+            <Vue3Lottie
+              :animationData="globeAnimation"
+              :height="700"
+              :width="600"
+              :loop="true"
+              :autoPlay="true"
+            />
+            <!-- 装饰性光晕 -->
+            <div class="absolute -top-10 -right-10 w-40 h-40 bg-red-500/5 dark:bg-red-400/5 rounded-full blur-2xl"></div>
+            <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-red-500/5 dark:bg-red-400/5 rounded-full blur-2xl"></div>
           </div>
         </div>
       </div>
@@ -103,8 +158,25 @@
 </template>
 
 <script>
+import { inject } from 'vue'
+import { Vue3Lottie } from 'vue3-lottie'
+import globeAnimation from '../assets/globe-animation.json'
+
 export default {
   name: 'HeroSection',
+  components: {
+    Vue3Lottie
+  },
+  setup() {
+    const messages = inject('messages')
+    const currentLang = inject('currentLang')
+
+    return {
+      messages,
+      currentLang,
+      globeAnimation
+    }
+  },
   data() {
     return {
       logoError: false,
@@ -112,14 +184,16 @@ export default {
       scrolled: false,
       mobileMenuOpen: false,
       navItems: [
-        { text: '功能特点', href: '#features' },
-        { text: '使用指南', href: '#guide' },
-        { text: '常见问题', href: '#faq' }
-      ]
+        { key: 'features', href: '#features' },
+        { key: 'guide', href: '#product' },
+        { key: 'faq', href: '#faq' }
+      ],
+      isDark: false
     }
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
+    this.isDark = document.documentElement.classList.contains('dark')
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll)
@@ -141,7 +215,7 @@ export default {
       this.mobileMenuOpen = false
       const element = document.querySelector(href)
       if (element) {
-        const offset = 80 // 导航栏高度加一些额外空间
+        const offset = 80
         const elementPosition = element.getBoundingClientRect().top
         const offsetPosition = elementPosition + window.pageYOffset - offset
 
@@ -150,6 +224,15 @@ export default {
           behavior: 'smooth'
         })
       }
+    },
+    toggleTheme() {
+      this.isDark = !this.isDark
+      document.documentElement.classList.toggle('dark')
+      localStorage.setItem('theme', this.isDark ? 'dark' : 'light')
+    },
+    toggleLanguage() {
+      const newLang = this.currentLang === 'zh' ? 'en' : 'zh'
+      this.$emit('language-change', newLang)
     }
   }
 }
@@ -183,5 +266,49 @@ export default {
 .animate-float-delay {
   animation: float 3s ease-in-out infinite;
   animation-delay: 1.5s;
+}
+
+.wave {
+  transform-origin: center;
+  animation: wave 3s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* 添加渐变效果 */
+.gradient-mask {
+  mask-image: radial-gradient(circle at center, black, transparent);
+}
+
+.earth-grid {
+  transform-origin: center;
+}
+
+.meteor {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* 添加星星闪烁动画 */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+.stars circle {
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+/* 添加轨道旋转动画 */
+@keyframes orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.earth-orbits {
+  animation: orbit 20s linear infinite;
 }
 </style> 
