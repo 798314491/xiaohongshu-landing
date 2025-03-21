@@ -1,3 +1,23 @@
+// import { createI18n } from 'vue-i18n'
+// import en from './en.json'
+// import zh from './zh.json'
+
+// 从 localStorage 获取保存的语言设置，如果没有则使用浏览器语言或默认为英文
+const savedLocale = localStorage.getItem('locale') || navigator.language.split('-')[0] || 'en'
+
+// 确保语言代码是支持的，否则默认为英文
+const locale = ['en', 'zh'].includes(savedLocale) ? savedLocale : 'en'
+
+// 添加语言切换函数，并保存到 localStorage
+export function setLocale(locale) {
+  localStorage.setItem('locale', locale)
+  document.querySelector('html').setAttribute('lang', locale)
+}
+
+// 初始化时设置 HTML lang 属性
+document.querySelector('html').setAttribute('lang', locale)
+
+// 保持现有的 messages 对象
 export const messages = {
   zh: {
     nav: {

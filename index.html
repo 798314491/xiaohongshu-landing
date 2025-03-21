@@ -3,14 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="src/assets/bitbug_favicon.ico" />
     <title>小红薯无水印图片下载</title>
     <script>
-      // 检查本地存储的主题设置
-      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark')
-      } else {
-        document.documentElement.classList.remove('dark')
-      }
+      // 在页面加载前清除主题设置
+      localStorage.removeItem('theme');
+      document.documentElement.classList.remove('dark');
     </script>
   </head>
   <body>

@@ -154,6 +154,11 @@
         </div>
       </div>
     </div>
+
+    <div class="controls">
+      <ThemeSwitcher />
+      <LanguageSwitcher />
+    </div>
   </section>
 </template>
 
@@ -161,11 +166,15 @@
 import { inject } from 'vue'
 import { Vue3Lottie } from 'vue3-lottie'
 import globeAnimation from '../assets/globe-animation.json'
+import ThemeSwitcher from '../components/ThemeSwitcher.vue'
+import LanguageSwitcher from '../components/LanguageSwitcher.vue'
 
 export default {
   name: 'HeroSection',
   components: {
-    Vue3Lottie
+    Vue3Lottie,
+    ThemeSwitcher,
+    LanguageSwitcher
   },
   setup() {
     const messages = inject('messages')
@@ -193,7 +202,17 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
-    this.isDark = document.documentElement.classList.contains('dark')
+    
+    // 从 localStorage 获取主题设置
+    const theme = localStorage.getItem('theme') || 'light'
+    this.isDark = theme === 'dark'
+    
+    // 确保 DOM 与状态一致
+    if (this.isDark) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll)

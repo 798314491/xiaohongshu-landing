@@ -1,0 +1,8 @@
+{
+  "nav": {
+    "features": "Features",
+    "guide": "Guide",
+    "faq": "FAQ"
+  },
+  // 复制 messages.en 中的所有内容到这里
+} 

@@ -76,7 +76,7 @@
       <!-- 添加使用数据统计 -->
       <div class="grid md:grid-cols-4 gap-8 mt-20">
         <div class="text-center">
-          <div class="text-3xl font-bold text-red-500 mb-2">100万+</div>
+          <div class="text-3xl font-bold text-red-500 mb-2">1万+</div>
           <div class="text-gray-600">{{ currentLang === 'zh' ? '累计用户' : 'Total Users' }}</div>
         </div>
         <div class="text-center">
@@ -84,11 +84,11 @@
           <div class="text-gray-600">{{ currentLang === 'zh' ? '好评率' : 'Satisfaction Rate' }}</div>
         </div>
         <div class="text-center">
-          <div class="text-3xl font-bold text-red-500 mb-2">1000万+</div>
+          <div class="text-3xl font-bold text-red-500 mb-2">10万+</div>
           <div class="text-gray-600">{{ currentLang === 'zh' ? '成功下载' : 'Downloads' }}</div>
         </div>
         <div class="text-center">
-          <div class="text-3xl font-bold text-red-500 mb-2">24h</div>
+          <div class="text-3xl font-bold text-red-500 mb-2">18h</div>
           <div class="text-gray-600">{{ currentLang === 'zh' ? '在线服务' : 'Online Service' }}</div>
         </div>
       </div>
